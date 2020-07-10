@@ -40,6 +40,7 @@ Function PasarAInstaladas {
     Copy-Item $Ficheros -Destination "$RutaDirectorioInstaladas\$CadenaFecha" -Force
 }
 Cls
+
 Import-Module 'C:\Program Files\Microsoft Dynamics 365 Business Central\160\Service\NavAdminTool.ps1'
 $NombreServicio = BuscarNombreServicio
 
