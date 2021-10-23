@@ -21,3 +21,6 @@ Sync-NavTenant <Nombre del servicio>
 
 # Reinicio del servicio NAV del docker (el nombre del servicio suele ser NAV)
 Set-NAVServerInstance <Nombre del servicio> -Restart
+
+# Instalar BcContainer Helper
+Install-Module BcContainerHelper -force -AllowClobber

@@ -331,11 +331,11 @@ $NoMesNuevo        = 7
 $NoAnoNuevo        = 20
 
 # $NoCUNueva2015     = 63
+# $NoCUNueva2016     = 56 # 56 = Junio 2020
+# $NoCUNueva2017     = 43 # 43 = Junio 2020
+# $NoCUNueva2018     = 30 # 30 = Junio 2020
 # $NoCUNuevaBC365    = 18
-$NoCUNueva2016     = 56 # 56 = Junio 2020
-$NoCUNueva2017     = 43 # 43 = Junio 2020
-$NoCUNueva2018     = 30 # 30 = Junio 2020
-$NoCUNuevaBC140    = 15
+$NoCUNuevaBC140    = 17 
 
 # Variables comunes ===============================================================================================================================================================
 $FicheroVersiones  = '\\tipsa.local\tipsa\CD Producto NAV\Utilidades\RoleTailored Clients\Links\Desarrollo\Versiones NAV.txt'
