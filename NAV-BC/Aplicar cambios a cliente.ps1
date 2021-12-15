@@ -15,6 +15,29 @@ Function CrearDirectorio{
     New-Item -Path $RutaReferencia -ItemType "directory" | out-null
 }
 
+Function CrearVersion{
+    Param([string]$FicheroCU00,[string]$FicheroCU,[string]$RutaDestino)
+    echo ("Creando versión " + $RutaDestino)
+    Split-NAVApplicationObjectFile -Source $FicheroCU00 -Destination $RutaDestino -Force
+    if ((test-path $FicheroCU) -and (-not($FicheroCU -eq $FicheroCU00)))
+        {
+        Split-NAVApplicationObjectFile -Source $FicheroCU -Destination $RutaDestino -Force
+        }
+}
+
+Function BorrarNoConflictivos{
+    Param([string]$RutaReferencia,[string]$RutaMaestra)
+    Echo ("Borrando objetos no conflictivos " + $RutaReferencia)
+    $Ficheros = (Get-Item ($RutaReferencia + "\*.*"))
+    foreach ($Ficheros in $Ficheros)
+        {
+        if (-not (Test-Path ($RutaMaestra + "\" + $Ficheros.Name)))
+            {
+            Remove-Item $Ficheros
+            }
+        }
+}
+
 Function CreateDeltaFiles {
     Param([string]$FicheroOriginal,
           [string]$FicheroModified)
