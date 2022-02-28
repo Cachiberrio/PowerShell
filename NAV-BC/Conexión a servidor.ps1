@@ -1,7 +1,7 @@
 ﻿
-$Remoto = "equipo.tipsa.local" # Nombre del equipo al que conectarse, poner el dominio completo, por ejemplo nav2015.tipsa.local. Equipos disponibles: nav2015.tipsa.local, nav2017.tipsa.local, bc365.tipsa.local y bc160.tipsa.local
-$username = 'tipsa\' # Usuario de dominio para acceder al servidor remoto
-$pass = ''
+$Remoto = "bc365.tipsa.local" # Nombre del equipo al que conectarse, poner el dominio completo, por ejemplo nav2015.tipsa.local. Equipos disponibles: nav2015.tipsa.local, nav2017.tipsa.local, bc365.tipsa.local y bc160.tipsa.local
+$username = 'tipsa\am' # Usuario de dominio para acceder al servidor remoto
+$pass = 'PintoTont0060'
 
 $pass = ConvertTo-SecureString -string $pass -AsPlainText -Force
 $cred = New-Object -typename System.Management.Automation.PSCredential -argumentlist $username, $pass
