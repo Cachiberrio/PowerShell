@@ -20,12 +20,14 @@ Function BorrarNoConflictivos{
         }
 }
 
-$RutaModuloOriginal = 'C:\Program Files (x86)\Microsoft Dynamics NAV\71\RoleTailored Client CU51\NavModelTools.ps1'
-$RutaModuloTarget   = 'C:\Program Files (x86)\Microsoft Dynamics 365 Business Central\130\RoleTailored Client CU05\NavModelTools.ps1'
+$RutaModuloOriginal = 'C:\Program Files (x86)\Microsoft Dynamics NAV\90\RoleTailored Client CU67\NavModelTools.ps1'
+$RutaModuloTarget   = 'C:\Program Files (x86)\Microsoft Dynamics NAV\90\RoleTailored Client CU67\NavModelTools.ps1'
 
-$FicheroOriginal    = 'C:\Tipsa\PowerShell\Migracion\Objetos\2009 CU00.txt'
-$FicheroTargetBase  = 'C:\Tipsa\PowerShell\Migracion\Objetos\BC365 CU00.txt'
-$FicheroTarget      = 'C:\Tipsa\PowerShell\Migracion\Objetos\BC365 CU05.txt'
+$FicheroOriginalBase= 'C:\Tipsa\PowerShell\Migracion\Objetos\2016 CU00.txt'
+$FicheroOriginal    = 'C:\Tipsa\PowerShell\Migracion\Objetos\2016 CU00.txt'
+$FicheroTargetBase  = 'C:\Tipsa\PowerShell\Migracion\Objetos\2016 CU00.txt'
+$FicheroTarget      = 'C:\Tipsa\PowerShell\Migracion\Objetos\2016 CU60.txt'
+
 $FicheroModified    = 'C:\Tipsa\PowerShell\Migracion\Modified.txt'
 
 $RutaMigracion      = 'C:\Tipsa\PowerShell\Migracion\'
@@ -44,8 +46,11 @@ CrearDirectorio $RutaModified
 CrearDirectorio $RutaDelta
 CrearDirectorio $RutaResultado
 
-Import-Module $RutaModuloOriginal
+# Import-Module $RutaModuloOriginal
+Import-Module $RutaModuloTarget
+
 echo "1.- Creando objetos versión original"
+Split-NAVApplicationObjectFile -Source $FicheroOriginalBase -Destination $RutaOriginal -Force
 Split-NAVApplicationObjectFile -Source $FicheroOriginal -Destination $RutaOriginal -Force
 
 echo "2.- Creando objetos modificados"
@@ -57,7 +62,8 @@ BorrarNoConflictivos $RutaOriginal $RutaModified
 echo "4.- Obtención de los Delta Files"
 Compare-NAVApplicationObject -OriginalPath ($RutaOriginal + "\*.TXT") -ModifiedPath ($RutaModified + "\*.TXT") -DeltaPath $RutaDelta -Force
 
-Import-Module $RutaModuloTarget
+# Remove-Module Microsoft.Dynamics.Nav.Model.Tools, Microsoft.Dynamics.Nav.Apps.Tools, Microsoft.Dynamics.Nav.Apps.Management
+# Import-Module $RutaModuloTarget
 
 echo "5.1.- Creando objetos versión Target"
 Split-NAVApplicationObjectFile -Source $FicheroTargetBase -Destination $RutaTarget -Force

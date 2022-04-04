@@ -20,12 +20,12 @@ Function BorrarNoConflictivos{
         }
 }
 
-$RutaModuloTarget    = 'C:\Program Files (x86)\Microsoft Dynamics 365 Business Central\140\RoleTailored Client CU07\NavModelTools.ps1'
+$RutaModuloTarget    = 'C:\Program Files (x86)\Microsoft Dynamics NAV\90\RoleTailored Client CU28\NavModelTools.ps1'
 
-$FicheroOriginalBase = 'C:\Tipsa\PowerShell\Migracion\Objetos\BC365 CU00.txt'
-$FicheroOriginal     = 'C:\Tipsa\PowerShell\Migracion\Objetos\BC365 CU04.txt'
+$FicheroOriginalBase = 'C:\Tipsa\PowerShell\Migracion\Objetos\2016 CU00.txt'
+$FicheroOriginal     = 'C:\Tipsa\PowerShell\Migracion\Objetos\2016 CU28.txt'
 $FicheroTargetBase   = 'C:\Tipsa\PowerShell\Migracion\Objetos\BC140 CU00.txt'
-$FicheroTarget       = 'C:\Tipsa\PowerShell\Migracion\Objetos\BC140 CU07.txt'
+$FicheroTarget       = 'C:\Tipsa\PowerShell\Migracion\Objetos\BC140 CU30.txt'
 $FicheroModified     = 'C:\Tipsa\PowerShell\Migracion\Modified.txt'
 
 $RutaMigracion       = 'C:\Tipsa\PowerShell\Migracion\'
