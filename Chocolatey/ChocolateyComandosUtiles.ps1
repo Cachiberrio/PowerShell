@@ -1,4 +1,4 @@
-# Consulta de la lista de aplicaciones instaladas y controlables mediante Chocolatey
+# Consulta de la lista de aplicaciones instaladas en local y controlables mediante Chocolatey
 Choco list -li
 
 # Búsqueda de aplicaciones para instalar
