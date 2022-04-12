@@ -1,3 +1,6 @@
+# Lista completa de comandos:
+# https://docs.chocolatey.org/en-us/choco/commands/list
+
 # Consulta de la lista de aplicaciones instaladas en local y controlables mediante Chocolatey
 Choco list -li
 
