@@ -20,22 +20,21 @@ Function BorrarNoConflictivos{
         }
 }
 
-$RutaModuloOriginal = 'C:\Program Files (x86)\Microsoft Dynamics NAV\90\RoleTailored Client CU67\NavModelTools.ps1'
-$RutaModuloTarget   = 'C:\Program Files (x86)\Microsoft Dynamics NAV\90\RoleTailored Client CU67\NavModelTools.ps1'
+$RutaModuloOriginal  = 'C:\Program Files (x86)\Microsoft Dynamics NAV\90\RoleTailored Client CU67\NavModelTools.ps1'
+$RutaModuloTarget    = 'C:\Program Files (x86)\Microsoft Dynamics NAV\90\RoleTailored Client CU67\NavModelTools.ps1'
 
-$FicheroOriginalBase= 'C:\Tipsa\PowerShell\Migracion\Objetos\2016 CU00.txt'
-$FicheroOriginal    = 'C:\Tipsa\PowerShell\Migracion\Objetos\2016 CU00.txt'
-$FicheroTargetBase  = 'C:\Tipsa\PowerShell\Migracion\Objetos\2016 CU00.txt'
-$FicheroTarget      = 'C:\Tipsa\PowerShell\Migracion\Objetos\2016 CU60.txt'
+$FicheroOriginalBase = 'C:\Tipsa\PowerShell\Migracion\Objetos\2016 CU00.txt'
+$FicheroOriginal     = 'C:\Tipsa\PowerShell\Migracion\Objetos\2016 CU60.txt'
+$FicheroTargetBase   = 'C:\Tipsa\PowerShell\Migracion\Objetos\2016 CU00.txt'
+$FicheroTarget       = 'C:\Tipsa\PowerShell\Migracion\Objetos\2016 CU67.txt'
+$FicheroModified     = 'C:\Tipsa\PowerShell\Migracion\Modified.txt'
 
-$FicheroModified    = 'C:\Tipsa\PowerShell\Migracion\Modified.txt'
-
-$RutaMigracion      = 'C:\Tipsa\PowerShell\Migracion\'
-$RutaOriginal       = 'C:\Tipsa\PowerShell\Migracion\Original'
-$RutaTarget         = 'C:\Tipsa\PowerShell\Migracion\Target'
-$RutaModified       = 'C:\Tipsa\PowerShell\Migracion\Modified'
-$RutaDelta          = 'C:\Tipsa\PowerShell\Migracion\Delta'
-$RutaResultado      = 'C:\Tipsa\PowerShell\Migracion\Resultado'
+$RutaMigracion       = 'C:\Tipsa\PowerShell\Migracion\'
+$RutaOriginal        = 'C:\Tipsa\PowerShell\Migracion\Original'
+$RutaTarget          = 'C:\Tipsa\PowerShell\Migracion\Target'
+$RutaModified        = 'C:\Tipsa\PowerShell\Migracion\Modified'
+$RutaDelta           = 'C:\Tipsa\PowerShell\Migracion\Delta'
+$RutaResultado       = 'C:\Tipsa\PowerShell\Migracion\Resultado'
 
 $ErrorActionPreference = "Stop"
 $HoraComienzo = Get-Date;
@@ -46,9 +45,7 @@ CrearDirectorio $RutaModified
 CrearDirectorio $RutaDelta
 CrearDirectorio $RutaResultado
 
-# Import-Module $RutaModuloOriginal
-Import-Module $RutaModuloTarget
-
+Import-Module $RutaModuloOriginal
 echo "1.- Creando objetos versión original"
 Split-NAVApplicationObjectFile -Source $FicheroOriginalBase -Destination $RutaOriginal -Force
 Split-NAVApplicationObjectFile -Source $FicheroOriginal -Destination $RutaOriginal -Force
@@ -62,13 +59,10 @@ BorrarNoConflictivos $RutaOriginal $RutaModified
 echo "4.- Obtención de los Delta Files"
 Compare-NAVApplicationObject -OriginalPath ($RutaOriginal + "\*.TXT") -ModifiedPath ($RutaModified + "\*.TXT") -DeltaPath $RutaDelta -Force
 
-# Remove-Module Microsoft.Dynamics.Nav.Model.Tools, Microsoft.Dynamics.Nav.Apps.Tools, Microsoft.Dynamics.Nav.Apps.Management
-# Import-Module $RutaModuloTarget
+Import-Module $RutaModuloTarget
 
-echo "5.1.- Creando objetos versión Target"
+echo "5.- Creando objetos versión Target"
 Split-NAVApplicationObjectFile -Source $FicheroTargetBase -Destination $RutaTarget -Force
-
-echo "5.2.- Creando objetos versión Target"
 Split-NAVApplicationObjectFile -Source $FicheroTarget -Destination $RutaTarget -Force
 
 echo "6.- Borrando Objetos no conflictivos Versión Target"

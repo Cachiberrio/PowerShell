@@ -7,7 +7,7 @@
     $NombreContenedor   = "BC" + $VersionBase + "CU" + $CU
     $imageName          = "mcr.microsoft.com/businesscentral/onprem"
     $ImageBCName        = (Get-NavContainerImageTags -imageName $imageName).Tags | Where-Object { ($_.contains($VersionBase + "." + $CU + ".")) -and ($_.contains("es-ltsc2019")) }
-    $RutaLicencia       = "C:\Tipsa\PowerShell\Scripts\EntornoConsultores\TIPSA160.flf"
+    $RutaLicencia       = "C:\Tipsa\Licencia\Microsoft Dynamics NAV Perpetual.flf"
 
     if (-not (Test-Path $RutaLicencia))
         {
