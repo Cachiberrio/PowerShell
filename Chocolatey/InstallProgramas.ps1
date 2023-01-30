@@ -13,8 +13,7 @@ choco install putty -y
 choco install foxitreader -y
 choco install paint.net -y
 choco install f.lux -y
-choco install anydesk -y
-choco install brave -ypui
+choco install brave -y
 choco install filezilla -y
 choco install firefox -y
 choco install chocolateygui -y
@@ -41,9 +40,9 @@ choco install microsoftazurestorageexplorer -y
 choco install docker-desktop -y
 choco install microsoft-windows-terminal -y
 choco install ConEmu -y
-#choco install powerbi -y
+choco install powerbi -y
 choco install nugetpackageexplorer -y
-
+choco install postman -y
 
 # Remotos y VPNs
 
@@ -52,7 +51,7 @@ choco install nugetpackageexplorer -y
 choco install forticlientvpn -y
 choco install radmin-vpn -y
 choco install openvpn -y
-choco install openvpn-connect
+choco install openvpn-connect -y
 choco install securepointsslvpn -y
 choco install openconnect-gui -y
 choco install citrix-workspace -y

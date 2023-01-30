@@ -31,6 +31,24 @@ Install-Module BcContainerHelper -force -AllowClobber
 # Desinstalar BcContainer Helper
 Uninstall-Module BcContainerHelper -force
 
+# Acceso al visor de sucesos del contenedor
+Get-BcContainerEventLog -containerName BC140
+
+# to retrieve a snapshot of the event log from the container
+Get-BcContainerEventLog -containerName BC140 
+
+# to get debug information about the container
+Get-BcContainerDebugInfo -containerName BC140 
+
+# to open a PowerShell prompt inside the container
+Enter-BcContainer -containerName BC140 
+
+# to remove the container again
+Remove-BcContainer -containerName BC140 
+
+# to retrieve information about URL's again
+docker logs BC140 
+
 #Creación container BC140 CU15 (Actualizado 22/10/21)
 $containerName = 'bc14cu15'
 $password = 'P@ssw0rd'
@@ -48,3 +66,16 @@ New-BcContainer `
     -licenseFile $licenseFile `
     -includeCSIDE `
     -updateHosts
+
+
+# Restauración de copia de seguridad en el docker
+$SQLInstanceName  = 'BC140CU30\SQLEXPRESS'
+$DatabaseName = 'CRONUS'
+$BackupFileName = 'C:\Program Files\Microsoft SQL Server\MSSQL15.SQLEXPRESS\MSSQL\Backup\CRONUS.bak'
+$DynamicsNAVServerName = 'MicrosoftDynamicsNavServer$NAV'
+
+stop-service $DynamicsNAVServerName
+invoke-sqlcmd -ServerInstance $SQLInstanceName -Query "Drop database CRONUS;"
+restore-SqlDatabase -ServerInstance $SQLInstanceName -Database $DatabaseName -BackupFile $BackupFileName
+start-service $DynamicsNAVServerName
+

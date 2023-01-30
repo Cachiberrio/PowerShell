@@ -1,0 +1,1 @@
+﻿# https://freddysblog.com/2021/02/15/running-tests-in-business-central-online-sandbox-environments/
