@@ -1,25 +1,4 @@
-﻿Function CrearDirectorio{
-    Param([string]$RutaReferencia)
-    echo ("Creando directorio " + $RutaReferencia)
-    if (Test-Path $RutaReferencia) 
-        {
-        Remove-Item ($RutaReferencia) -Recurse | out-null
-        }
-    New-Item -Path $RutaReferencia -ItemType "directory" | out-null
-}
-Function BorrarNoConflictivos{
-    Param([string]$RutaReferencia,[string]$RutaMaestra)
-    Echo ("Borrando objetos no conflictivos " + $RutaReferencia)
-    $Ficheros = (Get-Item ($RutaReferencia + "\*.*"))
-    foreach ($Ficheros in $Ficheros)
-        {
-        if (-not (Test-Path ($RutaMaestra + "\" + $Ficheros.Name)))
-            {
-            Remove-Item $Ficheros
-            }
-        }
-}
-function Merge-NAVVersionList
+﻿function Merge-NAVVersionList
 {
     param (
         [String]$OriginalVersionList,
@@ -119,94 +98,32 @@ function Get-NAVHighestVersionList
 
 }
 
-$RutaModuloOriginal  = 'C:\Program Files (x86)\Microsoft Dynamics 365 Business Central\130\RoleTailored Client CU18\NavModelTools.ps1'
-$RutaModuloTarget    = 'C:\Program Files (x86)\Microsoft Dynamics 365 Business Central\130\RoleTailored Client CU18\NavModelTools.ps1'
-
-$FicheroOriginalBase = 'C:\Tipsa\PowerShell\Migracion\Objetos\BC365 CU00.txt'
-$FicheroOriginal     = 'C:\Tipsa\PowerShell\Migracion\Objetos\BC365 CU18.txt'
-$FicheroTargetBase   = 'C:\Tipsa\PowerShell\Migracion\Objetos\BC140 CU00.txt'
-$FicheroTarget       = 'C:\Tipsa\PowerShell\Migracion\Objetos\BC140 CU17.txt'
-
-$RutaMigracion       = $PSScriptRoot
-$FicheroModified     = $PSScriptRoot + '\Modified.txt'
-$RutaOriginal        = $PSScriptRoot + '\Original'
-$RutaTarget          = $PSScriptRoot + '\Target'
-$RutaModified        = $PSScriptRoot + '\Modified'
-$RutaDelta           = $PSScriptRoot + '\Delta'
-$RutaResult          = $PSScriptRoot + '\Result'
-
-$ErrorActionPreference = "Stop"
-$HoraComienzo = Get-Date;
-
-CrearDirectorio $RutaOriginal
-CrearDirectorio $RutaTarget
-CrearDirectorio $RutaModified
-CrearDirectorio $RutaDelta
-CrearDirectorio $RutaResult
-
-Import-Module $RutaModuloOriginal
-echo "1.- Creando objetos versión original"
-Split-NAVApplicationObjectFile -Source $FicheroOriginalBase -Destination $RutaOriginal -Force
-Split-NAVApplicationObjectFile -Source $FicheroOriginal -Destination $RutaOriginal -Force
-
-echo "2.- Creando objetos modificados"
-Split-NAVApplicationObjectFile -Source $FicheroModified -Destination $RutaModified -Force
-
-echo "3.- Borrando Objetos no conflictivos Versión Original"
-BorrarNoConflictivos $RutaOriginal $RutaModified
-
-echo "4.- Obtención de los Delta Files"
-Compare-NAVApplicationObject -OriginalPath ($RutaOriginal + "\*.TXT") -ModifiedPath ($RutaModified + "\*.TXT") -DeltaPath $RutaDelta -Force
-
-Import-Module $RutaModuloTarget
-
-echo "5.- Creando objetos versión Target"
-Split-NAVApplicationObjectFile -Source $FicheroTargetBase -Destination $RutaTarget -Force
-Split-NAVApplicationObjectFile -Source $FicheroTarget -Destination $RutaTarget -Force
-
-echo "6.- Borrando Objetos no conflictivos Versión Target"
-BorrarNoConflictivos $RutaTarget $RutaModified
-
-echo "7.- Creando objetos modificados versión target"
-Update-NAVApplicationObject -TargetPath $RutaTarget -DeltaPath $RutaDelta -ResultPath $RutaResult
-
-Echo "8.- Merging Version List"
-
-# $OriginalFolder = $PSScriptRoot + '\Original'
-# $ModifiedFolder = $PSScriptRoot + '\Modified'
-# $TargetFolder = $PSScriptRoot + '\Target'
-# $ResultFolder = $PSScriptRoot + '\Result'
-
+$OriginalFolder = $PSScriptRoot + '\Original'
+$ModifiedFolder = $PSScriptRoot + '\Modified'
+$TargetFolder = $PSScriptRoot + '\Target'
+$ResultFolder = $PSScriptRoot + '\Result'
 $VersionListPrefixes = 'NAVW1', 'NAVES', 'IEP'
 
-$OriginalFile = (Get-Item ($RutaOriginal + '\*.*'))
+$OriginalFile = (Get-Item ($OriginalFolder + '\*.*'))
 foreach ($OriginalFile in $OriginalFile)
     {
     $Object = Get-NAVApplicationObjectProperty -Source $OriginalFile 
     $OriginalVersionList = $Object.VersionList
 
-    $ModifiedFile = (Get-Item ($RutaModified + '\' + $OriginalFile.Name))
+    $ModifiedFile = (Get-Item ($ModifiedFolder + '\' + $OriginalFile.Name))
     $Object = Get-NAVApplicationObjectProperty -Source $ModifiedFile 
     $ModifiedVersionList = $Object.VersionList
     $ModifiedDate = $Object.Date
     $ModifiedTime = $Object.Time
 
-    $TargetFile = (Get-Item ($RutaTarget + '\' + $OriginalFile.Name))
+    $TargetFile = (Get-Item ($TargetFolder + '\' + $OriginalFile.Name))
     $Object = Get-NAVApplicationObjectProperty -Source $TargetFile
     $TargetVersionList = $Object.VersionList
 
-    $ResultFile = (Get-Item ($RutaResult + '\' + $OriginalFile.Name))
+    $ResultFile = (Get-Item ($ResultFolder + '\' + $OriginalFile.Name))
     $Object = Get-NAVApplicationObjectProperty -Source $ResultFile
 
     $ResultVersionList = Merge-NAVVersionList $OriginalVersionList $ModifiedVersionList $TargetVersionList $VersionListPrefixes
     Set-NAVApplicationObjectProperty $ResultFile.FullName -VersionListProperty $ResultVersionList
     Set-NAVApplicationObjectProperty $ResultFile.FullName -DateTimeProperty ($ModifiedDate + ' ' + $ModifiedTime)
     }
-
-Echo "9.- Creación del fichero de resultados"
-Join-NAVApplicationObjectFile -Source ($RutaResult + "\*.txt") -Destination ($RutaMigracion + "\Result.txt") -Force
-
-$HoraFinal = Get-Date;
-echo "La migración ha finalizado correctamente."
-echo ("Comienzo: " + $HoraComienzo)
-echo ("Final   : " + $HoraFinal)
