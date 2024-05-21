@@ -22,7 +22,7 @@ choco install angryip -y
 choco install advanced-ip-scanner -y
 choco install wudt -y
 choco install files -y
-
+choco install winmerge -y
 
 # Management & dev Tools
 choco install dotnetfx -y
